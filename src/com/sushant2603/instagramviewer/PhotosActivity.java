@@ -126,20 +126,17 @@ public class PhotosActivity extends Activity {
 		    					}
 	    					}
     					}
-
-    					if (!photoJSON.isNull("comments") &&
-    							photoJSON.getJSONObject("comments").has("count")) {
+    					// Parse comments and get the latest.
+    					if (!photoJSON.isNull("comments")) {
+                            PhotoComment comment = new PhotoComment();
                             JSONArray listComments = photoJSON.getJSONObject("comments")
                             		.getJSONArray("data");
-                            PhotoComment comment = new PhotoComment();
-                            // Get the last comment set
-                            JSONObject comment1JSON = listComments.getJSONObject(
+                            JSONObject commentObject = listComments.getJSONObject(
                             		listComments.length()-1);
-                            comment.username = comment1JSON.getJSONObject("from")
-                            		.getString("username");
-                            comment.userImageUrl = comment1JSON.getJSONObject("from")
-                            		.getString("profile_picture");
-                            comment.text = comment1JSON.getString("text");
+                            JSONObject userObject = commentObject.getJSONObject("from");
+                            comment.username = userObject.getString("username");
+                            comment.userImageUrl = userObject.getString("profile_picture");
+                            comment.text = commentObject.getString("text");
                             photo.comment = comment;
     					}
     					photos.add(photo);

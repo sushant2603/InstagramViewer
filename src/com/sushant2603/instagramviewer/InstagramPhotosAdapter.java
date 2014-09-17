@@ -28,7 +28,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 		InstagramPhoto photo = getItem(position);
 		// Only few items in the memory. Check if recycled view.
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo_advanced, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_photo_advanced,
+					parent, false);
 		}
 		// Fill the header.
 		View header = convertView.findViewById(R.id.header);
