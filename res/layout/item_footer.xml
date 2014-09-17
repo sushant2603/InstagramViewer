@@ -3,23 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/tvLikes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:drawableLeft="@drawable/like"
+        android:drawablePadding="8dp"
         android:paddingBottom="0dp"
         android:paddingLeft="10dp"
-        android:text="TextView"
+        android:text="@string/likes_text"
         android:textColor="#3A5FCD"
-        android:textStyle="bold"
-        android:drawableLeft="@drawable/like"
-        android:drawablePadding="8dp"/>
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/tvCaption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvLikes"
         android:paddingLeft="10dp"
         android:paddingTop="0dp"
         android:maxLines="2"

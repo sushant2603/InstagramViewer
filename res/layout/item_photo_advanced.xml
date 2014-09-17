@@ -16,11 +16,14 @@
         android:adjustViewBounds="true"
         android:scaleType="center"
         android:paddingBottom="10dp" />
-    <include 
-        layout="@layout/item_header"
+
+    <include
         android:id="@+id/header"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        layout="@layout/item_header"
+        android:contentDescription="@string/image_source_description" />
+
 </FrameLayout>
     <include 
         layout="@layout/item_footer"

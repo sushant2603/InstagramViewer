@@ -86,21 +86,36 @@ public class PhotosActivity extends Activity {
     				for (int index = 0; index < photosJSON.length(); index++) {
     					JSONObject photoJSON = photosJSON.getJSONObject(index);
     					InstagramPhoto photo = new InstagramPhoto();
-    					photo.username = photoJSON.getJSONObject("user").getString("username");
+  						photo.username = photoJSON.getJSONObject("user").getString("username");
+    					photo.imageUrl = photoJSON.getJSONObject("images").
+    							getJSONObject("standard_resolution").getString("url");
+    					photo.imageHeight = photoJSON.getJSONObject("images")
+    							.getJSONObject("standard_resolution").getInt("height");
+    					photo.imageWidth = photoJSON.getJSONObject("images")
+    							.getJSONObject("standard_resolution").getInt("width");
+    					photo.likes_count = photoJSON.getJSONObject("likes").getInt("count");
+    					photo.userImageUrl = photoJSON.getJSONObject("user")
+    							.getString("profile_picture");
+
+    					// Get date
+  						photo.date = photoJSON.getLong("created_time");
+    					// Check and add caption.
+						photo.caption = "";
     					if (!photoJSON.isNull("caption")) {
     						photo.caption = photoJSON.getJSONObject("caption").getString("text");
-    					} else {
-    						photo.caption = "";
     					}
-
+    					// Parse Location.
     					photo.location="";
-    					if(!photoJSON.isNull("location") && photoJSON.getJSONObject("location") != null ) {
-    						if(photoJSON.getJSONObject("location").has("name")){
-    							photo.location = photoJSON.getJSONObject("location").getString("name");
-    						} else if(photoJSON.getJSONObject("location").has("latitude") && photoJSON.getJSONObject("location").has("longitude")) {
+    					if(!photoJSON.isNull("location")) {
+    						JSONObject locationObject = photoJSON.getJSONObject("location");
+    						if(locationObject.has("name")){
+    							photo.location = photoJSON.getJSONObject("location")
+    									.getString("name");
+    						} else if(locationObject.has("latitude") &&
+    								locationObject.has("longitude")) {
 	    						Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-	    						double lat = photoJSON.getJSONObject("location").getDouble("latitude");
-	    						double lng = photoJSON.getJSONObject("location").getDouble("longitude");
+	    						double lat = locationObject.getDouble("latitude");
+	    						double lng = locationObject.getDouble("longitude");
 		    					try {
 		    						List<Address> addresses = gcd.getFromLocation(lat, lng, 1);
 		    						if (addresses.size() > 0) {
@@ -112,23 +127,22 @@ public class PhotosActivity extends Activity {
 	    					}
     					}
 
-    					photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-    					photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-    					photo.likes_count = photoJSON.getJSONObject("likes").getInt("count");
-    					photo.userImageUrl = photoJSON.getJSONObject("user").getString("profile_picture");
-    					photos.add(photo);
-
-    					if (!photoJSON.isNull("comments") && photoJSON.getJSONObject("comments").has("count")) {
-                            int count = photoJSON.getJSONObject("comments").getInt("count");
-                            JSONArray listComments = photoJSON.getJSONObject("comments").getJSONArray("data");
+    					if (!photoJSON.isNull("comments") &&
+    							photoJSON.getJSONObject("comments").has("count")) {
+                            JSONArray listComments = photoJSON.getJSONObject("comments")
+                            		.getJSONArray("data");
                             PhotoComment comment = new PhotoComment();
                             // Get the last comment set
-                            JSONObject comment1JSON = listComments.getJSONObject(listComments.length()-1);
-                            comment.username = comment1JSON.getJSONObject("from").getString("username");
-                            comment.userImageUrl = comment1JSON.getJSONObject("from").getString("profile_picture");
+                            JSONObject comment1JSON = listComments.getJSONObject(
+                            		listComments.length()-1);
+                            comment.username = comment1JSON.getJSONObject("from")
+                            		.getString("username");
+                            comment.userImageUrl = comment1JSON.getJSONObject("from")
+                            		.getString("profile_picture");
                             comment.text = comment1JSON.getString("text");
                             photo.comment = comment;
     					}
+    					photos.add(photo);
     				}
     				aPhotos.notifyDataSetChanged();
     			} catch (JSONException e) {

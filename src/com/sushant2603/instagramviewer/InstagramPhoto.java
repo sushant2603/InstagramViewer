@@ -6,7 +6,9 @@ public class InstagramPhoto {
 	public String imageUrl;
 	public String userImageUrl;
 	public int imageHeight;
+	public int imageWidth;
 	public int likes_count;
 	public String location;
 	public PhotoComment comment;
+	public long date = 0;
 }
